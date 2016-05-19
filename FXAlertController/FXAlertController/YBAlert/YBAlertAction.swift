@@ -8,6 +8,24 @@
 
 import UIKit
 
+
+public enum YBAlertActionStyle : Int {
+    case Default
+    case Cancel
+}
+
+typealias Handler = (action: YBAlertAction) -> Void
+
 class YBAlertAction: NSObject {
+
+    var title: String?
+    var style: YBAlertActionStyle?
+    var handler: Handler?
     
+    internal convenience init(title: String?, style: YBAlertActionStyle?, image: UIImage, handler: Handler?) {
+        self.init()
+        self.title = title
+        self.style = style
+        self.handler = handler
+    }
 }

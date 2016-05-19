@@ -60,6 +60,12 @@ class YBAlertView: UIView {
         setupView()
     }
     
+    //MARK - Public
+    
+    internal func addAction(action: YBAlertAction) {
+        print("alert view add action")
+    }
+    
     //MARK - Private
     
     private func setupView() {
