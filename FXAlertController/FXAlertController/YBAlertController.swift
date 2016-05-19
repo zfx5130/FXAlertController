@@ -103,6 +103,18 @@ class YBAlertController: UIViewController {
         setupAlertView()
     }
     
+    //MARK - add Action
+    internal func addAction(action: YBAlertAction) {
+        
+    }
+    
+    //MARK - add Actions
+    internal func addActions(actions: [YBAlertAction]) {
+        for action in actions {
+            addAction(action)
+        }
+    }
+    
     //MARK - Private
     
     private func initialize() {

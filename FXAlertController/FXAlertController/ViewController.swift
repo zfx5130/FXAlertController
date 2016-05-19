@@ -19,8 +19,9 @@ class ViewController: UIViewController {
     }
     
     @IBAction func alertButtonWasPressed(sender: UIButton) {
-        let alertController = YBAlertController(title: nil, message: nil)
+        let alertController = YBAlertController(title: "封面选自", message: nil)
         presentViewController(alertController, animated: true, completion: nil)
     }
+    
 }
 
