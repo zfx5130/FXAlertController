@@ -183,7 +183,7 @@ class YBAlertView: UIView {
     private var messageLabelHeightConstraint: NSLayoutConstraint!
     private var bottomViewHeightConstraint: NSLayoutConstraint!
     
-    var viewController: YBAlertController?
+    var viewController: YBAlertController!
     private var title: String?
     private var message: String?
     private var cancelHandler: Handler!
@@ -741,10 +741,10 @@ extension YBAlertView {
         guard cancelHandler != nil else {
             return
         }
-        
         cancelHandler()
+
         if viewController != nil {
-            viewController?.dismissViewControllerAnimated(true, completion:nil)
+            viewController.dismissViewControllerAnimated(true, completion:nil)
         }
     }
     
@@ -757,7 +757,6 @@ extension YBAlertView: UITableViewDelegate {
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         cancelHandler = actions[indexPath.row].handler
         dismiss()
-        print("indexPath:::\(indexPath)")
     }
 }
 
