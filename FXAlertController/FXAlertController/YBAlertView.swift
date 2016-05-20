@@ -188,6 +188,7 @@ class YBAlertView: UIView {
     private var message: String?
     private var cancelHandler: Handler!
     private var actions: [YBAlertAction] = []
+    private var actionStyle: YBAlertActionStyle = .Default
     
     //MARK - Laz
     
@@ -274,6 +275,8 @@ class YBAlertView: UIView {
             setupDefaultAlertAction(action)
         case .Cancel:
             setupCancelAlertAction(action)
+        case .Destructive:
+            setupDefaultAlertAction(action)
         }
     }
     
@@ -288,7 +291,6 @@ class YBAlertView: UIView {
     }
     
     private func setupCancelAlertAction(action: YBAlertAction) {
-        addSubview(bottomView)
         setupBottomViewConstraints()
         setupBottomCancelButton(action)
     }
@@ -297,6 +299,7 @@ class YBAlertView: UIView {
         initialize()
         setupBackgroundImageView()
         setupHeadView()
+        addSubview(bottomView)
     }
     
     private func initialize() {
@@ -739,10 +742,9 @@ extension YBAlertView {
             return
         }
         
+        cancelHandler()
         if viewController != nil {
-            viewController?.dismissViewControllerAnimated(true, completion: { 
-                self.cancelHandler()
-            })
+            viewController?.dismissViewControllerAnimated(true, completion:nil)
         }
     }
     
@@ -773,8 +775,11 @@ extension YBAlertView: UITableViewDataSource {
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(YBActionTableViewCell.self), forIndexPath: indexPath) as! YBActionTableViewCell
         let action = actions[indexPath.row]
-        
         cell.actionButton.setTitle(action.title, forState: .Normal)
+        if action.style == .Destructive {
+            let color = UIColor(red: 237 / 255.0, green: 71 / 255.0, blue: 66 / 255.0, alpha: 1.0)
+            cell.actionButton.setTitleColor(color, forState: .Normal)
+        }
         cell.leftImageView.image = action.leftImage
         return cell
     }

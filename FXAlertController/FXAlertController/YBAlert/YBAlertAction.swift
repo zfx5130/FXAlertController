@@ -11,6 +11,7 @@ import UIKit
 public enum YBAlertActionStyle : Int {
     case Default
     case Cancel
+    case Destructive
 }
 
 typealias Handler = () -> Void
