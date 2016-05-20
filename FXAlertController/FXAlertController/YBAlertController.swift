@@ -73,7 +73,7 @@ extension YBAlertDismissSildeDown: UIViewControllerAnimatedTransitioning {
 
 class YBAlertController: UIViewController {
     
-    var alertView: UIView!
+    var alertView: YBAlertView!
     
     private lazy var backgroundView: UIView = {
         let view = UIView(frame: self.view.bounds)
@@ -99,13 +99,18 @@ class YBAlertController: UIViewController {
     internal convenience init(title: String?, message: String?) {
         self.init()
         let alertView = YBAlertView(title: title, message: message)
+        alertView.viewController = self
         self.alertView = alertView
         setupAlertView()
     }
     
     //MARK - add Action
     internal func addAction(action: YBAlertAction) {
-        
+        guard alertView != nil else {
+            return
+        }
+        let customView: YBAlertView = alertView as YBAlertView
+        customView.addAction(action)
     }
     
     //MARK - add Actions

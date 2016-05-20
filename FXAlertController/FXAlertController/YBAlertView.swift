@@ -8,6 +8,162 @@
 
 import UIKit
 
+class YBActionTableViewCell: UITableViewCell {
+    
+    let defaultImageViewSize = 24 as CGFloat
+    let defaultImageViewLeftPadding = 16 as CGFloat
+    let defaultImageViewTopPadding = 13 as CGFloat
+    
+    private lazy var leftImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.contentMode = .Center
+        imageView.userInteractionEnabled = false
+        return imageView
+    }()
+    
+    private lazy var actionButton: UIButton = {
+        let button = UIButton(type: .System)
+        let color = UIColor(red: 59 / 255.0, green: 80 / 255.0, blue: 105 / 255.0, alpha: 1.0)
+        button.setTitleColor(color, forState: .Normal)
+        button.backgroundColor = UIColor.clearColor()
+        button.userInteractionEnabled = false
+        button.titleLabel?.font = UIFont.boldSystemFontOfSize(14)
+        return button
+    }()
+    
+    private lazy var bottomLineView: UIView = {
+        let view = UIView()
+        view.backgroundColor = UIColor(red: 229 / 255.0, green: 234 / 255.0, blue: 240 / 255.0, alpha: 1.0)
+        return view
+    }()
+
+    override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        backgroundColor = UIColor.clearColor()
+        setupActionButton()
+        setupLeftImageView()
+        setupBottonLineView()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    //MARK - Private
+    
+    private func setupActionButton() {
+        addSubview(actionButton)
+        actionButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: actionButton,
+                           attribute: .Leading,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Leading,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: actionButton,
+                           attribute: .Trailing,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Trailing,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: actionButton,
+                           attribute: .Top,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Top,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: actionButton,
+                           attribute: .Bottom,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Bottom,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+    }
+    
+    private func setupLeftImageView() {
+        
+        insertSubview(leftImageView, aboveSubview: actionButton)
+        leftImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: leftImageView,
+                           attribute: .Leading,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Leading,
+                           multiplier: 1.0,
+                           constant: defaultImageViewLeftPadding).active = true
+        
+        NSLayoutConstraint(item: leftImageView,
+                           attribute: .Width,
+                           relatedBy: .Equal,
+                           toItem: nil,
+                           attribute: .NotAnAttribute,
+                           multiplier: 1.0,
+                           constant: defaultImageViewSize).active = true
+        
+        NSLayoutConstraint(item: leftImageView,
+                           attribute: .Height,
+                           relatedBy: .Equal,
+                           toItem: nil,
+                           attribute: .NotAnAttribute,
+                           multiplier: 1.0,
+                           constant: defaultImageViewSize).active = true
+        
+        NSLayoutConstraint(item: leftImageView,
+                           attribute: .CenterY,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .CenterY,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+    }
+    
+    private func setupBottonLineView() {
+        
+        addSubview(bottomLineView)
+        bringSubviewToFront(bottomLineView)
+        
+        bottomLineView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: bottomLineView,
+                           attribute: .Leading,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Leading,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: bottomLineView,
+                           attribute: .Trailing,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Trailing,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: bottomLineView,
+                           attribute: .Bottom,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Bottom,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: bottomLineView,
+                           attribute: .Height,
+                           relatedBy: .Equal,
+                           toItem: nil,
+                           attribute: .NotAnAttribute,
+                           multiplier: 1.0,
+                           constant: 0.5).active = true
+        
+    }
+}
+
 class YBAlertView: UIView {
 
     let defaultHeight = ScreenSize.Height as CGFloat
@@ -16,14 +172,22 @@ class YBAlertView: UIView {
     let defaultLabelPadding = 20 as CGFloat
     let defaultLabelTopPadding = 15 as CGFloat
     let defaultSingleLabelTopPadding = 15 as CGFloat
+    let defaultBottomViewHeight = 60 as CGFloat
+    let defaultCancelButtonPadding = 10 as CGFloat
+    let defaultActionButtonHeight = 50 as CGFloat
+    let defaultActionButtonPadding = 10 as CGFloat
     
     private var headViewHeightConstraint: NSLayoutConstraint!
     private var alertViewHeightConstraint: NSLayoutConstraint!
     private var titleLabelHeightConstraint: NSLayoutConstraint!
     private var messageLabelHeightConstraint: NSLayoutConstraint!
+    private var bottomViewHeightConstraint: NSLayoutConstraint!
     
+    var viewController: YBAlertController?
     private var title: String?
     private var message: String?
+    private var cancelHandler: Handler!
+    private var actions: [YBAlertAction] = []
     
     //MARK - Laz
     
@@ -31,8 +195,50 @@ class YBAlertView: UIView {
         return UIView()
     }()
     
+    private lazy var centerView: UIView = {
+        return UIView()
+    }()
+    
+    private lazy var shadowLayer: CALayer = {
+        return CALayer()
+    }()
+    
+    private lazy var bottomView: UIView = {
+        return UIView()
+    }()
+    
     private lazy var backgroundImageView: UIImageView = {
         return UIImageView()
+    }()
+    
+    private lazy var actionBackgroundImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.image = UIImage(named: "alert_action_background_image")
+        imageView.contentMode = .ScaleToFill
+        return imageView
+    }()
+    
+    private lazy var actionTableView: UITableView = {
+        let tableView = UITableView()
+        tableView.backgroundColor = UIColor.clearColor()
+        tableView.separatorStyle = .None
+        tableView.delegate = self
+        tableView.dataSource = self
+        tableView.scrollEnabled = false
+        tableView.registerClass(YBActionTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(YBActionTableViewCell.self))
+        return tableView
+    }()
+    
+    private lazy var cancelButton: UIButton = {
+        let button = UIButton(type: .System)
+        let color = UIColor(red: 59 / 255.0, green: 80 / 255.0, blue: 105 / 255.0, alpha: 1.0)
+        button.setTitleColor(color, forState: .Normal)
+        button.layer.cornerRadius = 2
+        button.layer.borderColor = UIColor(red: 202 / 255.0, green: 211 / 255.0, blue: 221 / 255.0, alpha: 1.0).CGColor
+        button.layer.borderWidth = 0.5
+        button.backgroundColor = UIColor.whiteColor()
+        button.titleLabel?.font = UIFont.boldSystemFontOfSize(14)
+        return button
     }()
     
     private lazy var titleLabel: UILabel = {
@@ -63,10 +269,29 @@ class YBAlertView: UIView {
     //MARK - Public
     
     internal func addAction(action: YBAlertAction) {
-        print("alert view add action")
+        switch action.style {
+        case .Default:
+            setupDefaultAlertAction(action)
+        case .Cancel:
+            setupCancelAlertAction(action)
+        }
     }
     
     //MARK - Private
+    
+    private func setupDefaultAlertAction(action: YBAlertAction) {
+        addSubview(centerView)
+        actions.append(action)
+        centerView.addSubview(actionTableView)
+        centerView.insertSubview(actionBackgroundImageView, belowSubview: actionTableView)
+        setupCenterViewConstraints()
+    }
+    
+    private func setupCancelAlertAction(action: YBAlertAction) {
+        addSubview(bottomView)
+        setupBottomViewConstraints()
+        setupBottomCancelButton(action)
+    }
     
     private func setupView() {
         initialize()
@@ -82,6 +307,31 @@ class YBAlertView: UIView {
                        height: defaultHeight)
         setupAlertViewConstraints()
     }
+    
+    private func setupBottomCancelButton(action: YBAlertAction) {
+        cancelButton.setTitle(action.title, forState: .Normal)
+        cancelButton.addTarget(self,
+                               action: #selector(cancelButtonWasPressed),
+                               forControlEvents: .TouchUpInside)
+        cancelHandler = action.handler
+        bottomView.addSubview(cancelButton)
+        setupButtonInnerShadow(cancelButton)
+        setupCancelButtonConstraints()
+    }
+    
+    private func setupButtonInnerShadow(button: UIButton) {
+        shadowLayer.frame = CGRect(x: 0,
+                                   y: 0,
+                                   width: ScreenSize.Width - 20,
+                                   height: defaultBottomViewHeight - 20)
+        shadowLayer.masksToBounds = false
+        shadowLayer.shadowColor = UIColor.blackColor().CGColor
+        shadowLayer.shadowOffset = CGSize(width: 0, height: 1)
+        shadowLayer.shadowRadius = 2
+        shadowLayer.shadowOpacity = 0.06
+        button.layer.insertSublayer(shadowLayer, atIndex: 0)
+    }
+    
     
     private func setupBackgroundImageView() {
         backgroundImageView.image = UIImage(named: "Community_action_sheet_background_image")
@@ -131,6 +381,188 @@ class YBAlertView: UIView {
     }
     
     //MARK - Constraint
+    
+    private func setupCenterViewConstraints() {
+        
+        centerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: centerView,
+                           attribute: .Leading,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Leading,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: centerView,
+                           attribute: .Trailing,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Trailing,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: centerView,
+                           attribute: .Top,
+                           relatedBy: .Equal,
+                           toItem: headView,
+                           attribute: .Bottom,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: centerView,
+                           attribute: .Bottom,
+                           relatedBy: .Equal,
+                           toItem: bottomView,
+                           attribute: .Top,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        actionTableView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: actionTableView,
+                           attribute: .Leading,
+                           relatedBy: .Equal,
+                           toItem: centerView,
+                           attribute: .Leading,
+                           multiplier: 1.0,
+                           constant: defaultActionButtonPadding).active = true
+        
+        NSLayoutConstraint(item: actionTableView,
+                           attribute: .Trailing,
+                           relatedBy: .Equal,
+                           toItem: centerView,
+                           attribute: .Trailing,
+                           multiplier: 1.0,
+                           constant: -defaultActionButtonPadding).active = true
+        
+        NSLayoutConstraint(item: actionTableView,
+                           attribute: .Top,
+                           relatedBy: .Equal,
+                           toItem: centerView,
+                           attribute: .Top,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: actionTableView,
+                           attribute: .Bottom,
+                           relatedBy: .Equal,
+                           toItem: centerView,
+                           attribute: .Bottom,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        actionBackgroundImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: actionBackgroundImageView,
+                           attribute: .Leading,
+                           relatedBy: .Equal,
+                           toItem: centerView,
+                           attribute: .Leading,
+                           multiplier: 1.0,
+                           constant: defaultActionButtonPadding - 2).active = true
+        
+        NSLayoutConstraint(item: actionBackgroundImageView,
+                           attribute: .Trailing,
+                           relatedBy: .Equal,
+                           toItem: centerView,
+                           attribute: .Trailing,
+                           multiplier: 1.0,
+                           constant: -defaultActionButtonPadding + 2).active = true
+        
+        NSLayoutConstraint(item: actionBackgroundImageView,
+                           attribute: .Top,
+                           relatedBy: .Equal,
+                           toItem: centerView,
+                           attribute: .Top,
+                           multiplier: 1.0,
+                           constant: -1.5).active = true
+        
+        NSLayoutConstraint(item: actionBackgroundImageView,
+                           attribute: .Bottom,
+                           relatedBy: .Equal,
+                           toItem: centerView,
+                           attribute: .Bottom,
+                           multiplier: 1.0,
+                           constant: 2.5).active = true
+        
+        alertViewHeightConstraint.constant =
+            alertViewHeightConstraint.constant + defaultActionButtonHeight
+        
+    }
+    
+    private func setupCancelButtonConstraints() {
+        
+        cancelButton.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: cancelButton,
+                           attribute: .Leading,
+                           relatedBy: .Equal,
+                           toItem: bottomView,
+                           attribute: .Leading,
+                           multiplier: 1.0,
+                           constant: defaultCancelButtonPadding).active = true
+        
+        NSLayoutConstraint(item: cancelButton,
+                           attribute: .Trailing,
+                           relatedBy: .Equal,
+                           toItem: bottomView,
+                           attribute: .Trailing,
+                           multiplier: 1.0,
+                           constant: -defaultCancelButtonPadding).active = true
+        
+        NSLayoutConstraint(item: cancelButton,
+                           attribute: .Top,
+                           relatedBy: .Equal,
+                           toItem:bottomView,
+                           attribute: .Top,
+                           multiplier: 1.0,
+                           constant: defaultCancelButtonPadding).active = true
+
+        NSLayoutConstraint(item: cancelButton,
+                           attribute: .Bottom,
+                           relatedBy: .Equal,
+                           toItem: bottomView,
+                           attribute: .Bottom,
+                           multiplier: 1.0,
+                           constant: -defaultCancelButtonPadding).active = true
+        
+    }
+    
+    private func setupBottomViewConstraints() {
+        
+        bottomView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint(item: bottomView,
+                           attribute: .Trailing,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Trailing,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: bottomView,
+                           attribute: .Leading,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Leading,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+        NSLayoutConstraint(item: bottomView,
+                           attribute: .Bottom,
+                           relatedBy: .Equal,
+                           toItem: self,
+                           attribute: .Bottom,
+                           multiplier: 1.0,
+                           constant: 0.0).active = true
+        
+       bottomViewHeightConstraint = NSLayoutConstraint(item: bottomView,
+                                                       attribute: .Height,
+                                                       relatedBy: .Equal,
+                                                       toItem: nil,
+                                                       attribute: .NotAnAttribute,
+                                                       multiplier: 1.0,
+                                                       constant: defaultBottomViewHeight)
+        bottomViewHeightConstraint.active = true
+        
+        alertViewHeightConstraint.constant = alertViewHeightConstraint.constant + bottomViewHeightConstraint.constant
+    }
     
     private func setupHeadLabelConstraints() {
         
@@ -185,14 +617,6 @@ class YBAlertView: UIView {
                            attribute: .Width,
                            multiplier: 1.0,
                            constant: 0.0).active = true
-
-//        NSLayoutConstraint(item: messageLabel,
-//                           attribute: .Bottom,
-//                           relatedBy: .Equal,
-//                           toItem: headView,
-//                           attribute: .Bottom,
-//                           multiplier: 1.0,
-//                           constant: -defaultLabelTopPadding).active = true
         
         NSLayoutConstraint(item: messageLabel,
                            attribute: .Top,
@@ -300,4 +724,59 @@ class YBAlertView: UIView {
                            constant: 0.0).active = true
     }
 
+}
+
+//MARK - Handlers
+
+extension YBAlertView {
+    
+    @objc private func cancelButtonWasPressed(sender: UIButton) {
+        dismiss()
+    }
+    
+    private func dismiss() {
+        guard cancelHandler != nil else {
+            return
+        }
+        
+        if viewController != nil {
+            viewController?.dismissViewControllerAnimated(true, completion: { 
+                self.cancelHandler()
+            })
+        }
+    }
+    
+}
+
+//MARK - UITableViewDelegate
+
+extension YBAlertView: UITableViewDelegate {
+    
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        cancelHandler = actions[indexPath.row].handler
+        dismiss()
+        print("indexPath:::\(indexPath)")
+    }
+}
+
+//MARK - UITableViewDelegate
+extension YBAlertView: UITableViewDataSource {
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return actions.count
+    }
+    
+    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        return defaultActionButtonHeight
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(YBActionTableViewCell.self), forIndexPath: indexPath) as! YBActionTableViewCell
+        let action = actions[indexPath.row]
+        
+        cell.actionButton.setTitle(action.title, forState: .Normal)
+        cell.leftImageView.image = action.leftImage
+        return cell
+    }
+    
 }
