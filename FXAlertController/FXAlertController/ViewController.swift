@@ -62,8 +62,8 @@ class ViewController: UIViewController {
             print("分享到")
         }
         alertController.addAction(cancleAction)
-        alertController.addAction(blackAction)
         alertController.addAction(reportAction)
+        alertController.addAction(blackAction)
         alertController.addAction(shareAction)
         
         presentViewController(alertController, animated: true, completion: nil)

@@ -742,9 +742,11 @@ extension YBAlertView {
             return
         }
         cancelHandler()
+        print("-------------")
 
         if viewController != nil {
             viewController.dismissViewControllerAnimated(true, completion:nil)
+            print("++++++++++++++")
         }
     }
     
@@ -755,6 +757,7 @@ extension YBAlertView {
 extension YBAlertView: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        tableView.deselectRowAtIndexPath(indexPath, animated: true)
         cancelHandler = actions[indexPath.row].handler
         dismiss()
     }
