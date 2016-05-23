@@ -4,8 +4,8 @@
 
 ###效果如下
 
-![](https://github.com/zfx5130/FXAlertController/demo4.gif)
-![](https://github.com/zfx5130/FXAlertController/demo5.gif)
+![](https://github.com/zfx5130/FXAlertController/blob/master/demo4.gif)
+![](https://github.com/zfx5130/FXAlertController/blob/master/demo5.gif)
 
 
 
