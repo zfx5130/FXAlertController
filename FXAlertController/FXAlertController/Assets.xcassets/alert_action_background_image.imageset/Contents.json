@@ -13,10 +13,10 @@
           "height" : 1
         },
         "cap-insets" : {
-          "bottom" : 15,
-          "top" : 15,
-          "right" : 15,
-          "left" : 15
+          "bottom" : 4,
+          "top" : 4,
+          "right" : 4,
+          "left" : 4
         }
       },
       "idiom" : "universal",
@@ -32,10 +32,10 @@
           "height" : 1
         },
         "cap-insets" : {
-          "bottom" : 20,
-          "top" : 20,
-          "right" : 20,
-          "left" : 20
+          "bottom" : 6,
+          "top" : 6,
+          "right" : 6,
+          "left" : 6
         }
       },
       "idiom" : "universal",

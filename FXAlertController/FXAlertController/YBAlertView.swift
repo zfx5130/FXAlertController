@@ -13,7 +13,7 @@ class YBActionTableViewCell: UITableViewCell {
     let defaultImageViewSize = 24 as CGFloat
     let defaultImageViewLeftPadding = 16 as CGFloat
     let defaultImageViewTopPadding = 13 as CGFloat
-    
+
     private lazy var leftImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .Center
@@ -48,6 +48,7 @@ class YBActionTableViewCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //MARK - Private
     
     private func setupActionButton() {
@@ -214,18 +215,20 @@ class YBAlertView: UIView {
     
     private lazy var actionBackgroundImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "alert_action_background_image")
         imageView.contentMode = .ScaleToFill
         return imageView
     }()
     
     private lazy var actionTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = UIColor.clearColor()
         tableView.separatorStyle = .None
         tableView.delegate = self
         tableView.dataSource = self
         tableView.scrollEnabled = false
+        tableView.layer.cornerRadius = 2
+        tableView.layer.borderColor = UIColor(red: 202 / 255.0, green: 211 / 255.0, blue: 221 / 255.0, alpha: 1.0).CGColor
+        tableView.layer.borderWidth = 0.5
+        tableView.layer.masksToBounds = true
         tableView.registerClass(YBActionTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(YBActionTableViewCell.self))
         return tableView
     }()
@@ -291,7 +294,7 @@ class YBAlertView: UIView {
     }
     
     private func setupCancelAlertAction(action: YBAlertAction) {
-        setupBottomViewConstraints()
+        updateBottomViewConstraints()
         setupBottomCancelButton(action)
     }
     
@@ -300,6 +303,7 @@ class YBAlertView: UIView {
         setupBackgroundImageView()
         setupHeadView()
         addSubview(bottomView)
+        setupBottomViewConstraints()
     }
     
     private func initialize() {
@@ -460,7 +464,7 @@ class YBAlertView: UIView {
                            toItem: centerView,
                            attribute: .Leading,
                            multiplier: 1.0,
-                           constant: defaultActionButtonPadding - 2).active = true
+                           constant: defaultActionButtonPadding).active = true
         
         NSLayoutConstraint(item: actionBackgroundImageView,
                            attribute: .Trailing,
@@ -468,7 +472,7 @@ class YBAlertView: UIView {
                            toItem: centerView,
                            attribute: .Trailing,
                            multiplier: 1.0,
-                           constant: -defaultActionButtonPadding + 2).active = true
+                           constant: -defaultActionButtonPadding).active = true
         
         NSLayoutConstraint(item: actionBackgroundImageView,
                            attribute: .Top,
@@ -476,7 +480,7 @@ class YBAlertView: UIView {
                            toItem: centerView,
                            attribute: .Top,
                            multiplier: 1.0,
-                           constant: -1.5).active = true
+                           constant: 0).active = true
         
         NSLayoutConstraint(item: actionBackgroundImageView,
                            attribute: .Bottom,
@@ -484,7 +488,7 @@ class YBAlertView: UIView {
                            toItem: centerView,
                            attribute: .Bottom,
                            multiplier: 1.0,
-                           constant: 2.5).active = true
+                           constant: 0).active = true
         
         alertViewHeightConstraint.constant =
             alertViewHeightConstraint.constant + defaultActionButtonHeight
@@ -528,6 +532,11 @@ class YBAlertView: UIView {
         
     }
     
+    private func updateBottomViewConstraints() {
+        bottomViewHeightConstraint.constant = defaultBottomViewHeight
+        alertViewHeightConstraint.constant = alertViewHeightConstraint.constant + bottomViewHeightConstraint.constant - defaultCancelButtonPadding
+    }
+    
     private func setupBottomViewConstraints() {
         
         bottomView.translatesAutoresizingMaskIntoConstraints = false
@@ -561,10 +570,10 @@ class YBAlertView: UIView {
                                                        toItem: nil,
                                                        attribute: .NotAnAttribute,
                                                        multiplier: 1.0,
-                                                       constant: defaultBottomViewHeight)
+                                                       constant: defaultCancelButtonPadding)
         bottomViewHeightConstraint.active = true
+        alertViewHeightConstraint.constant = alertViewHeightConstraint.constant + defaultCancelButtonPadding
         
-        alertViewHeightConstraint.constant = alertViewHeightConstraint.constant + bottomViewHeightConstraint.constant
     }
     
     private func setupHeadLabelConstraints() {
@@ -742,11 +751,9 @@ extension YBAlertView {
             return
         }
         cancelHandler()
-        print("-------------")
 
         if viewController != nil {
             viewController.dismissViewControllerAnimated(true, completion:nil)
-            print("++++++++++++++")
         }
     }
     
@@ -764,6 +771,7 @@ extension YBAlertView: UITableViewDelegate {
 }
 
 //MARK - UITableViewDelegate
+
 extension YBAlertView: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -782,6 +790,7 @@ extension YBAlertView: UITableViewDataSource {
             let color = UIColor(red: 237 / 255.0, green: 71 / 255.0, blue: 66 / 255.0, alpha: 1.0)
             cell.actionButton.setTitleColor(color, forState: .Normal)
         }
+        cell.bottomLineView.hidden = (indexPath.row == actions.count - 1)
         cell.leftImageView.image = action.leftImage
         return cell
     }
