@@ -125,7 +125,7 @@ class YBAlertController: UIViewController {
     private func initialize() {
         transitioningDelegate = self
         modalPresentationStyle = .Custom
-        view.backgroundColor = UIColor.whiteColor()
+        view.backgroundColor = UIColor.clearColor()
     }
     
     private func setupBackgroundView() {
