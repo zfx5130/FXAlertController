@@ -1,5 +1,5 @@
 //
-//  YBAlertController.swift
+//  FXAlertController.swift
 //  FXAlertController
 //
 //  Created by dev on 5/18/16.
@@ -14,18 +14,18 @@ struct ScreenSize {
     static let Height = ScreenSize.ScreenBounds.height
 }
 
- //MARK: - YBAlertPresentSlideUp
+ //MARK: - FXAlertPresentSlideUp
 
-class YBAlertPresentSlideUp: NSObject {
+class FXAlertPresentSlideUp: NSObject {
 }
 
-extension YBAlertPresentSlideUp: UIViewControllerAnimatedTransitioning {
+extension FXAlertPresentSlideUp: UIViewControllerAnimatedTransitioning {
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.5;
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let destinationVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as! YBAlertController
+        let destinationVC = transitionContext.viewControllerForKey(UITransitionContextToViewControllerKey) as! FXAlertController
         let view = destinationVC.view
         let centerY = view.bounds.height + destinationVC.alertView.frame.size.height * 0.5
         destinationVC.backgroundView.alpha = 0;
@@ -44,19 +44,19 @@ extension YBAlertPresentSlideUp: UIViewControllerAnimatedTransitioning {
     }
 }
 
- //MARK: - YBAlertDismissSildeDown
+ //MARK: - FXAlertDismissSildeDown
 
-class YBAlertDismissSildeDown: NSObject {
+class FXAlertDismissSildeDown: NSObject {
 }
 
-extension YBAlertDismissSildeDown: UIViewControllerAnimatedTransitioning {
+extension FXAlertDismissSildeDown: UIViewControllerAnimatedTransitioning {
     
     func transitionDuration(transitionContext: UIViewControllerContextTransitioning?) -> NSTimeInterval {
         return 0.3;
     }
     
     func animateTransition(transitionContext: UIViewControllerContextTransitioning) {
-        let originVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as! YBAlertController
+        let originVC = transitionContext.viewControllerForKey(UITransitionContextFromViewControllerKey) as! FXAlertController
         let duration = transitionDuration(transitionContext)
         UIView.animateWithDuration(duration, animations: { 
             originVC.backgroundView.alpha = 0.0
@@ -69,11 +69,11 @@ extension YBAlertDismissSildeDown: UIViewControllerAnimatedTransitioning {
     }
 }
 
- //MARK: - YBAlertController
+ //MARK: - FXAlertController
 
-class YBAlertController: UIViewController {
+class FXAlertController: UIViewController {
     
-    var alertView: YBAlertView!
+    var alertView: FXAlertView!
     
     private lazy var backgroundView: UIView = {
         let view = UIView(frame: self.view.bounds)
@@ -98,23 +98,23 @@ class YBAlertController: UIViewController {
     //MARK - Public
     internal convenience init(title: String?, message: String?) {
         self.init()
-        let alertView = YBAlertView(title: title, message: message)
+        let alertView = FXAlertView(title: title, message: message)
         alertView.viewController = self
         self.alertView = alertView
         setupAlertView()
     }
     
     //MARK - add Action
-    internal func addAction(action: YBAlertAction) {
+    internal func addAction(action: FXAlertAction) {
         guard alertView != nil else {
             return
         }
-        let customView: YBAlertView = alertView as YBAlertView
+        let customView: FXAlertView = alertView as FXAlertView
         customView.addAction(action)
     }
     
     //MARK - add Actions
-    internal func addActions(actions: [YBAlertAction]) {
+    internal func addActions(actions: [FXAlertAction]) {
         for action in actions {
             addAction(action)
         }
@@ -166,19 +166,19 @@ class YBAlertController: UIViewController {
     
 }
 
-extension YBAlertController: UIViewControllerTransitioningDelegate {
+extension FXAlertController: UIViewControllerTransitioningDelegate {
  
     //MARK - UIViewControllerTransitioningDelegate
     func animationControllerForPresentedController(presented: UIViewController, presentingController presenting: UIViewController, sourceController source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return YBAlertPresentSlideUp()
+        return FXAlertPresentSlideUp()
     }
     
     func animationControllerForDismissedController(dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return YBAlertDismissSildeDown()
+        return FXAlertDismissSildeDown()
     }
 }
 
-extension YBAlertController {
+extension FXAlertController {
     
     //MARK - Handlers
     

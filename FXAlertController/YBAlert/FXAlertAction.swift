@@ -1,5 +1,5 @@
 //
-//  YBAlertAction.swift
+//  FXAlertAction.swift
 //  FXAlertController
 //
 //  Created by dev on 5/19/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-public enum YBAlertActionStyle : Int {
+public enum FXAlertActionStyle : Int {
     case Default
     case Cancel
     case Destructive
@@ -16,14 +16,14 @@ public enum YBAlertActionStyle : Int {
 
 typealias Handler = () -> Void
 
-class YBAlertAction: NSObject {
+class FXAlertAction: NSObject {
 
     var title: String?
-    var style: YBAlertActionStyle = YBAlertActionStyle.Default
+    var style: FXAlertActionStyle = FXAlertActionStyle.Default
     var handler: Handler?
     var leftImage: UIImage?
     
-    internal convenience init(title: String?, style: YBAlertActionStyle, leftImage: UIImage?, handler: Handler?) {
+    internal convenience init(title: String?, style: FXAlertActionStyle, leftImage: UIImage?, handler: Handler?) {
         self.init()
         self.title = title
         self.style = style

@@ -1,5 +1,5 @@
 //
-//  YBAlertView.swift
+//  FXAlertView.swift
 //  FXAlertController
 //
 //  Created by dev on 5/18/16.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class YBActionTableViewCell: UITableViewCell {
+class FXActionTableViewCell: UITableViewCell {
     
     let defaultImageViewSize = 24 as CGFloat
     let defaultImageViewLeftPadding = 16 as CGFloat
@@ -165,7 +165,7 @@ class YBActionTableViewCell: UITableViewCell {
     }
 }
 
-class YBAlertView: UIView {
+class FXAlertView: UIView {
 
     let defaultHeight = ScreenSize.Height as CGFloat
     let defaultHeadViewHeight = 50 as CGFloat
@@ -184,12 +184,12 @@ class YBAlertView: UIView {
     private var messageLabelHeightConstraint: NSLayoutConstraint!
     private var bottomViewHeightConstraint: NSLayoutConstraint!
     
-    var viewController: YBAlertController!
+    var viewController: FXAlertController!
     private var title: String?
     private var message: String?
     private var cancelHandler: Handler!
-    private var actions: [YBAlertAction] = []
-    private var actionStyle: YBAlertActionStyle = .Default
+    private var actions: [FXAlertAction] = []
+    private var actionStyle: FXAlertActionStyle = .Default
     
     //MARK - Laz
     
@@ -229,7 +229,7 @@ class YBAlertView: UIView {
         tableView.layer.borderColor = UIColor(red: 202 / 255.0, green: 211 / 255.0, blue: 221 / 255.0, alpha: 1.0).CGColor
         tableView.layer.borderWidth = 0.5
         tableView.layer.masksToBounds = true
-        tableView.registerClass(YBActionTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(YBActionTableViewCell.self))
+        tableView.registerClass(FXActionTableViewCell.self, forCellReuseIdentifier: NSStringFromClass(FXActionTableViewCell.self))
         return tableView
     }()
     
@@ -272,7 +272,7 @@ class YBAlertView: UIView {
     
     //MARK - Public
     
-    internal func addAction(action: YBAlertAction) {
+    internal func addAction(action: FXAlertAction) {
         switch action.style {
         case .Default:
             setupDefaultAlertAction(action)
@@ -285,7 +285,7 @@ class YBAlertView: UIView {
     
     //MARK - Private
     
-    private func setupDefaultAlertAction(action: YBAlertAction) {
+    private func setupDefaultAlertAction(action: FXAlertAction) {
         addSubview(centerView)
         actions.append(action)
         centerView.addSubview(actionTableView)
@@ -293,7 +293,7 @@ class YBAlertView: UIView {
         setupCenterViewConstraints()
     }
     
-    private func setupCancelAlertAction(action: YBAlertAction) {
+    private func setupCancelAlertAction(action: FXAlertAction) {
         updateBottomViewConstraints()
         setupBottomCancelButton(action)
     }
@@ -315,7 +315,7 @@ class YBAlertView: UIView {
         setupAlertViewConstraints()
     }
     
-    private func setupBottomCancelButton(action: YBAlertAction) {
+    private func setupBottomCancelButton(action: FXAlertAction) {
         cancelButton.setTitle(action.title, forState: .Normal)
         cancelButton.addTarget(self,
                                action: #selector(cancelButtonWasPressed),
@@ -740,7 +740,7 @@ class YBAlertView: UIView {
 
 //MARK - Handlers
 
-extension YBAlertView {
+extension FXAlertView {
     
     @objc private func cancelButtonWasPressed(sender: UIButton) {
         dismiss()
@@ -761,7 +761,7 @@ extension YBAlertView {
 
 //MARK - UITableViewDelegate
 
-extension YBAlertView: UITableViewDelegate {
+extension FXAlertView: UITableViewDelegate {
     
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         tableView.deselectRowAtIndexPath(indexPath, animated: true)
@@ -772,7 +772,7 @@ extension YBAlertView: UITableViewDelegate {
 
 //MARK - UITableViewDelegate
 
-extension YBAlertView: UITableViewDataSource {
+extension FXAlertView: UITableViewDataSource {
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return actions.count
@@ -783,7 +783,7 @@ extension YBAlertView: UITableViewDataSource {
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(YBActionTableViewCell.self), forIndexPath: indexPath) as! YBActionTableViewCell
+        let cell = tableView.dequeueReusableCellWithIdentifier(NSStringFromClass(FXActionTableViewCell.self), forIndexPath: indexPath) as! FXActionTableViewCell
         let action = actions[indexPath.row]
         cell.actionButton.setTitle(action.title, forState: .Normal)
         if action.style == .Destructive {

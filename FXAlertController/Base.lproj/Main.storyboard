@@ -17,14 +17,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tsA-2J-4QT">
+                                <rect key="frame" x="9" y="85" width="357" height="74"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="74" id="3hJ-Ao-nST"/>
+                                </constraints>
+                                <state key="normal" title="title,message都为nil状态"/>
+                                <connections>
+                                    <action selector="alert:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ZDM-Qs-Nol"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4k1-pG-ezL">
-                                <rect key="frame" x="9" y="196.5" width="357" height="74"/>
+                                <rect key="frame" x="9" y="196" width="357" height="74"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="74" id="0UJ-ep-4CE"/>
                                 </constraints>
-                                <state key="normal" title="AlertController2"/>
+                                <state key="normal" title="title,Message有一个为nil状态"/>
                                 <connections>
-                                    <action selector="alertButtonWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="l2d-uj-VQG"/>
+                                    <action selector="alertButtonWasPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="6Ie-xv-eP7"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2uk-dU-86a">
@@ -32,20 +42,36 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="95" id="8Xi-Yd-aIR"/>
                                 </constraints>
-                                <state key="normal" title="AlertController2"/>
+                                <state key="normal" title="title,message都不为nil状态"/>
                                 <connections>
-                                    <action selector="alert:" destination="BYZ-38-t0r" eventType="touchUpInside" id="O3C-mi-Bpl"/>
+                                    <action selector="alertTwo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="LzN-sd-tKs"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qew-yI-aY4">
+                                <rect key="frame" x="0.0" y="445" width="375" height="95"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="95" id="ThP-vr-Okp"/>
+                                </constraints>
+                                <state key="normal" title="三种样式action状态"/>
+                                <connections>
+                                    <action selector="alertThree:" destination="BYZ-38-t0r" eventType="touchUpInside" id="ocq-V2-JzT"/>
                                 </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="tsA-2J-4QT" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="65" id="21R-pS-uzN"/>
                             <constraint firstItem="2uk-dU-86a" firstAttribute="top" secondItem="4k1-pG-ezL" secondAttribute="bottom" constant="59.5" id="4aS-D5-Dzl"/>
                             <constraint firstItem="2uk-dU-86a" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="U2k-h8-CpE"/>
                             <constraint firstItem="4k1-pG-ezL" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" constant="-100" id="VQP-ps-gP3"/>
                             <constraint firstAttribute="trailing" secondItem="4k1-pG-ezL" secondAttribute="trailing" constant="9" id="VnO-1a-Qul"/>
+                            <constraint firstItem="qew-yI-aY4" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="YIY-3L-0TZ"/>
+                            <constraint firstItem="qew-yI-aY4" firstAttribute="top" secondItem="2uk-dU-86a" secondAttribute="bottom" constant="20" id="YaM-Ci-Tbz"/>
                             <constraint firstItem="4k1-pG-ezL" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="9" id="aqg-OZ-T2u"/>
                             <constraint firstAttribute="trailing" secondItem="2uk-dU-86a" secondAttribute="trailing" id="bLv-qr-l5m"/>
+                            <constraint firstAttribute="trailing" secondItem="tsA-2J-4QT" secondAttribute="trailing" constant="9" id="d8g-VZ-lhv"/>
+                            <constraint firstItem="tsA-2J-4QT" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="9" id="lsK-3D-UUe"/>
+                            <constraint firstAttribute="trailing" secondItem="qew-yI-aY4" secondAttribute="trailing" id="qWk-cx-oRc"/>
                             <constraint firstItem="4k1-pG-ezL" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="upt-4a-GqX"/>
                         </constraints>
                     </view>
